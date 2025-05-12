@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile | LoopRunner</title>
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #00f5d4;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      background: #1a1a1a;
+      color: #00f5d4;
+      border: 1px solid #00f5d4;
+    }
+    .profile-info {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Profile</h1>
+  
+  <div class="profile-info">
+    <label for="username">Custom Username</label>
+    <input type="text" id="username" placeholder="Enter your custom username">
+    <label for="vehicle">Vehicle</label>
+    <input type="text" id="vehicle" placeholder="Enter your vehicle">
+    <label for="bio">Short Bio</label>
+    <textarea id="bio" placeholder="Write a short bio"></textarea>
+  </div>
+  
+  <button onclick="saveProfile()">Save Profile</button>
+  <button onclick="window.location.href='home.html'">Go Home</button>
+  
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+    import { auth } from './firebase.js';
+    
+    let currentUser = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        loadProfileData();
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    function loadProfileData() {
+      const db = getDatabase();
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      
+      userRef.once('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          document.getElementById('username').value = data.username || '';
+          document.getElementById('vehicle').value = data.vehicle || '';
+          document.getElementById('bio').value = data.bio || '';
+        }
+      });
+    }
+
+    function saveProfile() {
+      const username = document.getElementById('username').value;
+      const vehicle = document.getElementById('vehicle').value;
+      const bio = document.getElementById('bio').value;
+      
+      const db = getDatabase();
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      
+      set(userRef, {
+        username: username,
+        vehicle: vehicle,
+        bio: bio
+      }).then(() => {
+        alert("Profile saved successfully!");
+      }).catch((error) => {
+        alert("Error saving profile: " + error.message);
+      });
+    }
+  </script>
+</body>
+</html>
