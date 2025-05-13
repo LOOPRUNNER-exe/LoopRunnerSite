@@ -1,44 +1,41 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LoopRunner Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loop Runner Access</title>
   <style>
     body {
-      background: #0d0d0d;
-      color: #00f5d4;
-      font-family: monospace;
+      background-color: #0f0f0f;
+      color: #0ff;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
+      font-family: monospace;
     }
     input, button {
-      margin: 10px;
+      margin-top: 10px;
       padding: 10px;
-      background: #1a1a1a;
-      color: #00f5d4;
-      border: 1px solid #00f5d4;
+      border: none;
+      background-color: #1a1a1a;
+      color: #0ff;
     }
   </style>
 </head>
 <body>
-  <h1>LoopRunner</h1>
-  <p>Enter Access Password:</p>
-  <input type="password" id="password" placeholder="Enter password...">
+  <h1>LOOP RUNNER</h1>
+  <input type="password" id="password" placeholder="Enter Password"/>
   <button onclick="checkPassword()">Enter</button>
 
   <script>
     function checkPassword() {
-      const pass = document.getElementById("password").value;
-      if (pass === "runner_") {
-        window.location.href = "home.html";
+      const password = document.getElementById('password').value;
+      if (password === 'runner_') {
+        window.location.href = 'home.html';
       } else {
-        alert("Incorrect password.");
+        alert('Incorrect password.');
       }
     }
   </script>
