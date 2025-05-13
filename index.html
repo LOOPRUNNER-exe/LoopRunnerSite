@@ -2,40 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Loop Runner Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LoopRunner Access</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
       background-color: #0f0f0f;
-      color: #0ff;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      font-family: monospace;
+      color: #e0f7fa;
     }
-    input, button {
-      margin-top: 10px;
+
+    h1 {
+      font-size: 3rem;
+      color: #00bcd4;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .password-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type="password"] {
       padding: 10px;
-      border: none;
+      width: 250px;
+      border-radius: 8px;
+      border: 1px solid #00bcd4;
       background-color: #1a1a1a;
-      color: #0ff;
+      color: #e0f7fa;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #00bcd4;
+      color: #0f0f0f;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>LOOP RUNNER</h1>
-  <input type="password" id="password" placeholder="Enter Password"/>
-  <button onclick="checkPassword()">Enter</button>
+  <div class="logo">
+    <h1>LOOPRUNNER</h1>
+  </div>
+  <div class="password-container">
+    <input type="password" id="password" placeholder="Enter access password" />
+    <button onclick="checkPassword()">ENTER</button>
+    <div class="error" id="error"></div>
+  </div>
 
   <script>
     function checkPassword() {
-      const password = document.getElementById('password').value;
-      if (password === 'runner_') {
-        window.location.href = 'home.html';
+      const input = document.getElementById("password").value;
+      if (input === "runner_") {
+        window.location.href = "home.html";
       } else {
-        alert('Incorrect password.');
+        document.getElementById("error").textContent = "Wrong password. Try again.";
       }
     }
   </script>
