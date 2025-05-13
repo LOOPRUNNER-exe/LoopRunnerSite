@@ -1,16 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Profile</title>
-  <script type="module" src="profile.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoopRunner | Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0f0f0f;
+      color: #e0f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .profile-container {
+      background-color: #121212;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.4);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00bcd4;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #1e1e1e;
+      border: 1px solid #00bcd4;
+      border-radius: 6px;
+      color: #e0f7fa;
+      font-size: 1rem;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background-color: #1e1e1e;
+      border: 1px solid #00bcd4;
+      border-radius: 6px;
+      color: #e0f7fa;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00bcd4;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+  </style>
 </head>
 <body>
-  <h2>Your Profile</h2>
-  <input id="username" placeholder="Username"><br/>
-  <input id="vehicle" placeholder="Vehicle"><br/>
-  <textarea id="bio" placeholder="Short Bio"></textarea><br/>
-  <button id="saveBtn">Save Profile</button>
-  <p id="status"></p>
+  <div class="profile-container">
+    <h2>Profile Settings</h2>
+    <form id="profile-form">
+      <input type="text" id="username" placeholder="Custom Username" required>
+      <input type="text" id="vehicle" placeholder="Vehicle (e.g. 350Z, GSXR600, R7)" required>
+      <textarea id="bio" placeholder="Short Bio..." rows="4" required></textarea>
+      <button type="submit">Save Profile</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("profile-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      // Firebase DB logic to store user data goes here
+      alert("Profile saved (Firebase database logic to be added).");
+    });
+  </script>
 </body>
 </html>
