@@ -94,3 +94,31 @@
   </script>
 </body>
 </html>
+
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+
+// Get the currently logged-in user
+const user = getAuth().currentUser;
+
+// Function to save profile data
+function saveProfile() {
+  const username = document.getElementById('username').value;
+  const vehicle = document.getElementById('vehicle').value;
+  const bio = document.getElementById('bio').value;
+
+  // Get a reference to the user's node in the database
+  const db = getDatabase();
+  const userRef = ref(db, 'users/' + user.uid);  // `user.uid` is the unique ID of the logged-in user
+
+  // Save the profile data
+  set(userRef, {
+    username: username,
+    vehicle: vehicle,
+    bio: bio
+  }).then(() => {
+    alert("Profile saved successfully!");
+  }).catch((error) => {
+    alert("Error saving profile: " + error.message);
+  });
+}
