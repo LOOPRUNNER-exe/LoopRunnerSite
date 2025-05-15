@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Loop Runner | Laps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #0ff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .lap-form {
+      max-width: 400px;
+      margin: 0 auto 40px auto;
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .lap-form input, .lap-form button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .lap-form input {
+      background-color: #2c2c2c;
+      color: #fff;
+    }
+
+    .lap-form button {
+      background-color: #0ff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .leaderboard {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #1c1c1c;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .leaderboard h2 {
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+      background: #0ff;
+      color: #000;
+    }
+
+    .entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 20px;
+      border-top: 1px solid #333;
+    }
+
+    .entry:nth-child(-n+3) {
+      background: #111;
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff;
+    }
+
+    .entry:nth-child(4),
+    .entry:nth-child(5),
+    .entry:nth-child(6),
+    .entry:nth-child(7),
+    .entry:nth-child(8),
+    .entry:nth-child(9),
+    .entry:nth-child(10) {
+      background: #222;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Submit Your Lap Time</h1>
+
+  <div class="lap-form">
+    <input type="text" id="username" placeholder="Username (auto-fill later)" disabled>
+    <input type="number" id="lapTime" placeholder="Lap Time (in seconds)" min="1" step="0.01" required>
+    <button onclick="submitLapTime()">Submit</button>
+  </div>
+
+  <div class="leaderboard">
+    <h2>Top 25 Lap Times</h2>
+    <div id="leaderboardEntries"></div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, query, orderByChild, limitToFirst } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3fhRVtPPFt_Z89QEZBZujQKV_vS7JZXI",
+      authDomain: "looprunner-1a1bc.firebaseapp.com",
+      databaseURL: "https://looprunner-1a1bc-default-rtdb.firebaseio.com",
+      projectId: "looprunner-1a1bc",
+      storageBucket: "looprunner-1a1bc.appspot.com",
+      messagingSenderId: "251377328592",
+      appId: "1:251377328592:web:329ae4b4e01b228fde19d5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
+        document.getElementById('username').value = user.email.split('@')[0];
+      }
+    });
+
+    function submitLapTime() {
+      const lapTime = parseFloat(document.getElementById('lapTime').value);
+      if (!currentUser || isNaN(lapTime)) return alert("You must be logged in and enter a valid time.");
+
+      const entry = {
+        username: currentUser.email.split('@')[0],
+        lapTime
+      };
+
+      push(ref(db, 'laps'), entry).then(() => {
+        document.getElementById('lapTime').value = '';
+      });
+    }
+
+    const leaderboardRef = query(ref(db, 'laps'), orderByChild('lapTime'), limitToFirst(25));
+
+    onValue(leaderboardRef, snapshot => {
+      const entries = snapshot.val();
+      const sorted = Object.values(entries || {}).sort((a, b) => a.lapTime - b.lapTime);
+
+      const container = document.getElementById('leaderboardEntries');
+      container.innerHTML = '';
+
+      sorted.forEach((entry, index) => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<strong>#${index + 1}</strong> ${entry.username} — ${entry.lapTime.toFixed(2)}s`;
+        container.appendChild(div);
+      });
+    });
+
+    window.submitLapTime = submitLapTime;
+  </script>
+</body>
+</html>
