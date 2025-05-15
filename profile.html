@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoopRunner | Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0f0f0f;
+      color: #e0f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
+    .profile-container {
+      background: linear-gradient(145deg, #1a1a1a, #0c0c0c);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      width: 90%;
+      max-width: 480px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ffff;
+      font-size: 1.8rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      background-color: #1c1c1c;
+      border: 1px solid #00bcd4;
+      border-radius: 8px;
+      color: #e0f7fa;
+      font-size: 1rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background-color: #00bcd4;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0097a7;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Edit Your Profile</h2>
+    <form id="profileForm">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="text" id="vehicle" placeholder="Vehicle (e.g. R7, 350Z)" required>
+      <textarea id="bio" placeholder="Write a short bio..." rows="4" required></textarea>
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+
+  <script>
+    const profileForm = document.getElementById('profileForm');
+    profileForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const vehicle = document.getElementById('vehicle').value;
+      const bio = document.getElementById('bio').value;
+
+      // Placeholder for Firebase logic
+      alert(`Saved!\nUsername: ${username}\nVehicle: ${vehicle}\nBio: ${bio}`);
+    });
+  </script>
+</body>
+</html>
